@@ -5,6 +5,7 @@ const main = document.querySelector('main');
 const srcSel = document.querySelector('#srcSel');
 const defaultSrc = 'the-washington-post';
 
+// Main function
 window.addEventListener('load', async () => {
     await updateSources();
     srcSel.value = defaultSrc;
@@ -13,6 +14,17 @@ window.addEventListener('load', async () => {
     srcSel.addEventListener('change',  e => {
         updateNews(e.target.value);
     });
+
+    // Check if serviceWorker is supported
+    if('serviceWorker' in navigator){
+        try{
+            // register ServiceWorker
+            await navigator.serviceWorker.register('sw.js');
+            console.log("serviceWorker registered");
+        } catch (e) {
+            console.log("serviceWorker reg failed",e);
+        }
+    }
 });
 
 async function updateSources() {
