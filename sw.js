@@ -1,3 +1,5 @@
+const cacheFirstName = 'news-static';
+
 // SW is only triggered by events!
 // SW should cache all our static assets
 
@@ -10,8 +12,8 @@ const staticAssets = [
 
 self.addEventListener('install', async e => {
     console.log('install', e);
-    const cache = await caches.open('news-static');
-    cache.addAll(staticAssets);
+    const cache = await caches.open(cacheFirstName);
+    await cache.addAll(staticAssets);
 });
 
 // Events sent from application to network

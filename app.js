@@ -1,16 +1,18 @@
 // URL: https://www.youtube.com/watch?v=gcx-3qi7t7c
 
+// Using API: https://newsapi.org
 const apiKey = '505743fe8c214f2287dca0c6e2cc7703';
+
+// Caching DOM
 const main = document.querySelector('main');
 const srcSel = document.querySelector('#srcSel');
 const defaultSrc = 'the-washington-post';
 
 // Main function
 window.addEventListener('load', async () => {
+    updateNews();
     await updateSources();
     srcSel.value = defaultSrc;
-    updateNews();
-
     srcSel.addEventListener('change',  e => {
         updateNews(e.target.value);
     });
@@ -21,8 +23,8 @@ window.addEventListener('load', async () => {
             // register ServiceWorker
             await navigator.serviceWorker.register('sw.js');
             console.log("serviceWorker registered");
-        } catch (e) {
-            console.log("serviceWorker reg failed",e);
+        } catch (error) {
+            console.log("serviceWorker reg failed", error);
         }
     }
 });
