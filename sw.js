@@ -1,32 +1,60 @@
-const cacheFirstName = 'news-static';
+// URL: https://github.com/marcushellberg/alternative-news/blob/master/sw.js
 
 // SW is only triggered by events!
-// SW should cache all our static assets
-
+// SW should cache all our static assets to make them available offline
 // defined array of static assets
 const staticAssets = [
     './',
-    './styles.css',
-    './app.js'
+    './style.css',
+    './app.js',
+    './fallback.json',
+    './images/fetch-dog.jpg'
 ];
 
 self.addEventListener('install', async e => {
     console.log('install', e);
-    const cache = await caches.open(cacheFirstName);
-    await cache.addAll(staticAssets);
+    await caches.open('news-static').then(cache => {
+        cache.addAll(staticAssets);
+    });
+});
+
+self.addEventListener('activate', event => {
+    event.waitUntil(self.clients.claim());
 });
 
 // Events sent from application to network
 // Intercepting fetch events
 self.addEventListener('fetch', e => {
-    console.log('fetch', e);
+    console.log('fetch successfully intercepted', e);
     const req = e.request;
-    e.respondWith(cacheFirst(req));
+    const url = new URL(req.url);
+
+    //
+    if (url.origin === location.origin) {
+        e.respondWith(cacheFirst(req));
+    } else {
+        e.respondWith(networkFirst(req));
+    }
 });
 
 async function cacheFirst(req) {
     const cachedResponse = await caches.match(req);
-    // Fallback if not cached
+    // Fetch request from network if not cached
     return cachedResponse || fetch(req);
+}
+
+async function networkFirst(request) {
+    const dynamicCache = await caches.open('news-dynamic');
+    try {
+        console.log('fetching network response');
+        const networkResponse = await fetch(request);
+        await dynamicCache.put(request, networkResponse.clone());
+        return networkResponse;
+    } catch (error) {
+        console.log('using fallback network response', error);
+        // If new items could not be loaded use fallback response
+        const cachedResponse = await dynamicCache.match(request);
+        return cachedResponse || caches.match('./fallback.json');
+    }
 }
 
