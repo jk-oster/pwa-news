@@ -5,6 +5,9 @@ const apiKey = '505743fe8c214f2287dca0c6e2cc7703';
 
 // Caching DOM
 const main = document.querySelector('main');
+const btnOpenFile = document.querySelector('#btnFilePicker');
+const btnSave = document.querySelector('#btnSave');
+const textArea = document.querySelector('#text');
 const srcSel = document.querySelector('#srcSel');
 const defaultSrc = 'the-washington-post';
 
@@ -13,13 +16,13 @@ window.addEventListener('load', async () => {
     updateNews();
     await updateSources();
     srcSel.value = defaultSrc;
-    srcSel.addEventListener('change',  e => {
+    srcSel.addEventListener('change', e => {
         updateNews(e.target.value);
     });
 
     // Check if serviceWorker is supported
-    if('serviceWorker' in navigator){
-        try{
+    if ('serviceWorker' in navigator) {
+        try {
             // register ServiceWorker
             await navigator.serviceWorker.register('sw.js');
             console.log("serviceWorker registered");
@@ -27,7 +30,44 @@ window.addEventListener('load', async () => {
             console.log("serviceWorker reg failed", error);
         }
     }
+
+    if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition(position => {
+            console.log(position);
+        });
+    }
+
+    if (typeof window.showOpenFilePicker === 'function') {
+        btnOpenFile.addEventListener('click', e => {
+            e.preventDefault();
+            openFile();
+        });
+        btnSave.addEventListener('click', e => {
+            e.preventDefault();
+            saveFile();
+        });
+    } else {
+        btnSave.remove();
+        btnOpenFile.remove();
+    }
+
 });
+
+async function openFile() {
+    const [fileHandle] = await window.showOpenFilePicker();
+    const file = await fileHandle.getFile();
+    const text = await file.text();
+    textArea.innerText = text;
+    console.log(file);
+    console.log(text);
+    console.log(fileHandle);
+}
+
+async function saveFile() {
+    let stream = await fileHandle.createWriteable();
+    await stream.write(textArea.innerText);
+    await stream.close();
+}
 
 async function updateSources() {
     const response = await fetch(`https://newsapi.org/v2/sources?apiKey=${apiKey}`);

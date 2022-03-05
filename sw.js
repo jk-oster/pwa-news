@@ -7,6 +7,7 @@ const staticAssets = [
     './',
     './style.css',
     './app.js',
+    './manifest.json',
     './fallback.json',
     './images/fetch-dog.jpg'
 ];
@@ -29,7 +30,6 @@ self.addEventListener('fetch', e => {
     const req = e.request;
     const url = new URL(req.url);
 
-    //
     if (url.origin === location.origin) {
         e.respondWith(cacheFirst(req));
     } else {
