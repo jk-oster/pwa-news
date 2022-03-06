@@ -7,6 +7,7 @@ const apiKey = '505743fe8c214f2287dca0c6e2cc7703';
 const main = document.querySelector('main');
 const srcSel = document.querySelector('#srcSel');
 const defaultSrc = 'the-washington-post';
+let articleId = 0;
 
 // Main function
 window.addEventListener('load', async () => {
@@ -48,12 +49,17 @@ async function updateNews(source = defaultSrc) {
 
 function createArticle(article) {
     return `
-    <div class="article">
+    <div class="article" id="${articleId++}">
       <a href="${article.url}">
         <h2>${article.title}</h2>
-        <img src="${article.urlToImage}" alt="${article.title}">
+        ${article.urlToImage ? articleImg(article) : ""}
         <p>${article.description}</p>
       </a>
+      <button class="star">Star this Article for later</button>
     </div>
   `;
+}
+
+function articleImg(article) {
+    return `<img src="${article.urlToImage}" alt="${article.title}">`;
 }
