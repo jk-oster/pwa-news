@@ -1,0 +1,33 @@
+{
+  "name": "pwa-news",
+  "version": "1.0.0",
+  "description": "Alternative News Web App using news-api",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jk-oster/pwa-news.git"
+  },
+  "keywords": [
+    "news",
+    "api",
+    "pwa"
+  ],
+  "author": "Jakob Osterberger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jk-oster/pwa-news/issues"
+  },
+  "homepage": "https://github.com/jk-oster/pwa-news#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-imagemin": "^7.1.0"
+  },
+  "dependencies": {
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify": "^3.0.2"
+  }
+}

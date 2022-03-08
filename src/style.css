@@ -36,6 +36,24 @@ main {
     color: inherit;
 }
 
+.article a div {
+    padding: 0 10px 0 10px;
+}
+
+.article {
+    overflow: hidden;
+    border: 2px solid whitesmoke;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
 .article img {
-    width: 100%;
+    align-self: center;
+    object-fit: cover;
+    height: 250px;
+}
+
+.article button {
+    align-self: flex-end;
 }

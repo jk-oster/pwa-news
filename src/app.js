@@ -51,11 +51,12 @@ function createArticle(article) {
     return `
     <div class="article" id="${articleId++}">
       <a href="${article.url}">
-        <h2>${article.title}</h2>
         ${article.urlToImage ? articleImg(article) : ""}
-        <p>${article.description}</p>
+        <div>
+            <h2>${article.title}</h2>
+            <p>${article.description}</p>
+        </div>
       </a>
-      <button class="star">Star this Article for later</button>
     </div>
   `;
 }
