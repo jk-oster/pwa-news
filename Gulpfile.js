@@ -7,20 +7,17 @@ const imagemin = require('gulp-imagemin');
 
 function css() {
     return gulp.src([
-        'style.css'
+        'src/style.css'
     ])
-        .pipe(concat('src/styles.css'))
-        .pipe(gulp.dest('dist-gulp/css'))
-        .pipe(concat('styles.min.css'))
+        .pipe(concat('style.css'))
         .pipe(cleanCSS())
-        .pipe(gulp.dest('dist-gulp/css'));
+        .pipe(gulp.dest('dist-gulp'));
 }
 
 function js() {
     return gulp.src('src/*.js')
-        .pipe(concat('scripts.min.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('dist-gulp/js'));
+        .pipe(gulp.dest('dist-gulp'));
 }
 
 function img() {
@@ -28,7 +25,17 @@ function img() {
         .pipe(imagemin([
             imagemin.mozjpeg({optimizationLevel: 5})
         ]))
-        .pipe(gulp.dest('images/dist-gulp/'));
+        .pipe(gulp.dest('dist-gulp/images'));
 }
 
-exports.default = gulp.parallel(gulp.series(css), js, img);
+function copyData() {
+    return gulp.src(['src/*.json', 'src/*.html'])
+        .pipe(gulp.dest('dist-gulp'));
+}
+
+function copyIcons() {
+    return gulp.src('images/icons/*')
+        .pipe(gulp.dest('dist-gulp/images/icons'));
+}
+
+exports.default = gulp.parallel(gulp.series(css), js, img, copyData, copyIcons);
