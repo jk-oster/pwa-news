@@ -38,4 +38,14 @@ function copyIcons() {
         .pipe(gulp.dest('dist-gulp/images/icons'));
 }
 
-exports.default = gulp.parallel(gulp.series(css), js, img, copyData, copyIcons);
+const gulpBuild = gulp.parallel(gulp.series(css), js, img, copyData, copyIcons);
+
+exports.default = function () {
+    gulp.watch(['src/*.json', 'src/*.html'], copyData());
+
+    gulp.watch('image/*.css', img);
+
+    gulp.watch('src/*.css', gulp.series(css));
+
+    gulp.watch('src/*.js', js);
+}

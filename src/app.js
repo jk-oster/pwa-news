@@ -1,5 +1,9 @@
 // URL: https://www.youtube.com/watch?v=gcx-3qi7t7c
 
+function someUseLessFunction() {
+    console.log('blabla');
+}
+
 // Using API: https://newsapi.org
 const apiKey = '505743fe8c214f2287dca0c6e2cc7703';
 
