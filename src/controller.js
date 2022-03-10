@@ -20,7 +20,7 @@ class Controller {
         if ('serviceWorker' in navigator) {
             try {
                 // register ServiceWorker
-                await navigator.serviceWorker.register('sw.js');
+                await navigator.serviceWorker.register('./serviceworker/sw.js');
                 console.log("serviceWorker registered");
             } catch (error) {
                 console.log("serviceWorker reg failed", error);

@@ -54,8 +54,8 @@ class News extends Subject {
     async updateNews(source = this.#defaultSrc) {
         const response = await fetch(`https://newsapi.org/v2/top-headlines?sources=${source}&sortBy=top&apiKey=${this.#apiKey}`);
         const json = await response.json();
-        const articles = [...json.articles].map(article => article.id = this.id++);
-        console.log(articles);
+        /*const articles = [...json.articles].map(article => article.id = this.id++);
+        console.log(articles);*/
         super.notify('updateNews', json);
     }
 }
