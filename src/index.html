@@ -9,6 +9,7 @@
 <body>
 <header>
     <h1>News API App</h1>
+    <button id="savedArticles">Saved Articles</button>
     <div>
         <label for="srcSel">Newsportal:</label>
         <select name="source" id="srcSel">
@@ -16,9 +17,12 @@
         </select>
     </div>
 </header>
+<div id="modal" class="hidden">
+    <!--starred articles go here-->
+</div>
 <main id="main">
 
 </main>
-<script src="app.js"></script>
+<script type="module" src="app.js"></script>
 </body>
 </html>

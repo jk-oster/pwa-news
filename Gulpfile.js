@@ -41,6 +41,8 @@ function copyIcons() {
 const gulpBuild = gulp.parallel(gulp.series(css), js, img, copyData, copyIcons);
 
 exports.default = function () {
+    gulpBuild();
+
     gulp.watch(['src/*.json', 'src/*.html'], copyData());
 
     gulp.watch('image/*.css', img);

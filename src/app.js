@@ -5,5 +5,5 @@ import {getInstance as Controller} from "./controller.js";
 
 // Main function
 window.addEventListener('load', async () => {
-    Controller().init();
+    await Controller().init();
 });

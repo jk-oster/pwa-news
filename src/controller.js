@@ -14,6 +14,7 @@ class Controller {
 
         news.subscribe('updateSources', view, view.updateSources);
         news.subscribe('updateNews', view, view.updateNews);
+        // news.subscribe('updateSaved', view, view.updateSaved);
 
         // Check if serviceWorker is supported
         if ('serviceWorker' in navigator) {
@@ -24,6 +25,20 @@ class Controller {
             } catch (error) {
                 console.log("serviceWorker reg failed", error);
             }
+        } else console.log('serviceWorker is not supported');
+
+        if (window.indexedDB) {
+            // news.updateSaved();
+            view.DOM.main.addEventListener('click', e => {
+                if (e.target.id.includes('save_')) {
+                    const article = view.getArticleById(e.target.id.replace('save_', ''));
+                    news.save(article);
+
+                }
+            });
+        } else {
+            console.log('indexedDB is not supported');
+            document.querySelector('#savedArticles').remove();
         }
 
         await news.updateNews();
