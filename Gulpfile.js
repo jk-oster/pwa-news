@@ -63,7 +63,8 @@ function copyIcons() {
         .pipe(gulp.dest('dist-gulp/images/icons'));
 }
 
-const gulpBuild = gulp.parallel(gulp.series(css), html, js, img, copyJson, copyIcons);
+// gulp.series(css)
+const gulpBuild = gulp.parallel(css, html, js, img, copyJson, copyIcons);
 
 exports.default = function () {
     gulpBuild();
