@@ -6,7 +6,7 @@ const imagemin = require('gulp-imagemin');
 const minifyHTML = require('gulp-htmlmin');
 const stripComments = require('gulp-strip-comments');
 const jsHint = require('gulp-jshint');
-const terser = require('gulp-terser');
+// const terser = require('gulp-terser');
 
 function lint(done) {
     gulp.src(['./js/*.js*', '!./js/*.min.js'])
@@ -37,13 +37,17 @@ function css() {
         .pipe(gulp.dest('dist-gulp'));
 }
 
+exports.css = css;
+
 function js() {
     return gulp.src('src/*.js')
         .pipe(stripComments())
-        .pipe(terser())
+        // .pipe(terser())
         .pipe(uglify())
         .pipe(gulp.dest('dist-gulp'));
 }
+
+exports.js = js;
 
 function img() {
     return gulp.src('images/*')
@@ -53,15 +57,21 @@ function img() {
         .pipe(gulp.dest('dist-gulp/images'));
 }
 
+exports.img = img;
+
 function copyJson() {
     return gulp.src(['src/*.json'])
         .pipe(gulp.dest('dist-gulp'));
 }
 
+exports.copyJson = copyJson;
+
 function copyIcons() {
     return gulp.src('images/icons/*')
         .pipe(gulp.dest('dist-gulp/images/icons'));
 }
+
+exports.copyIcons = copyIcons;
 
 // gulp.series(css)
 const gulpBuild = gulp.parallel(css, html, js, img, copyJson, copyIcons);
@@ -69,7 +79,7 @@ const gulpBuild = gulp.parallel(css, html, js, img, copyJson, copyIcons);
 exports.default = function () {
     gulpBuild();
 
-    gulp.watch('src/*.json', copyJson());
+    gulp.watch('src/*.json', copyJson);
     gulp.watch('images/*', img);
     gulp.watch('src/*.css', css);
     gulp.watch('src/*.js', js);
