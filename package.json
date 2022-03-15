@@ -23,7 +23,11 @@
   "homepage": "https://github.com/jk-oster/pwa-news#readme",
   "devDependencies": {
     "gulp": "^4.0.2",
-    "gulp-imagemin": "^7.1.0"
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-imagemin": "^7.1.0",
+    "gulp-jshint": "^2.1.0",
+    "gulp-strip-comments": "^2.5.2",
+    "gulp-terser": "^2.1.0"
   },
   "dependencies": {
     "gulp-clean-css": "^4.3.0",

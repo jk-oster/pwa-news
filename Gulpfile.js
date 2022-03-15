@@ -3,11 +3,34 @@ const concat = require('gulp-concat');
 const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
 const imagemin = require('gulp-imagemin');
+const minifyHTML = require('gulp-htmlmin');
+const stripComments = require('gulp-strip-comments');
+const jsHint = require('gulp-jshint');
+const terser = require('gulp-terser');
 
+function lint(done) {
+    gulp.src(['./js/*.js*', '!./js/*.min.js'])
+        .pipe(jsHint({esnext: true}))
+        .pipe(jsHint.reporter('default'));
+    done();
+}
+
+exports.lint = lint;
+
+// minify HTML pages
+
+function html() {
+    return gulp.src('./src/*.html')
+        .pipe(stripComments())
+        .pipe(minifyHTML({collapseWhitespace: true}))
+        .pipe(gulp.dest('dist-gulp'));
+}
+
+exports.htmlpage = html;
 
 function css() {
     return gulp.src([
-        'src/style.css'
+        'src/*.css'
     ])
         .pipe(concat('style.css'))
         .pipe(cleanCSS())
@@ -16,6 +39,8 @@ function css() {
 
 function js() {
     return gulp.src('src/*.js')
+        .pipe(stripComments())
+        .pipe(terser())
         .pipe(uglify())
         .pipe(gulp.dest('dist-gulp'));
 }
@@ -28,8 +53,8 @@ function img() {
         .pipe(gulp.dest('dist-gulp/images'));
 }
 
-function copyData() {
-    return gulp.src(['src/*.json', 'src/*.html'])
+function copyJson() {
+    return gulp.src(['src/*.json'])
         .pipe(gulp.dest('dist-gulp'));
 }
 
@@ -38,16 +63,14 @@ function copyIcons() {
         .pipe(gulp.dest('dist-gulp/images/icons'));
 }
 
-const gulpBuild = gulp.parallel(gulp.series(css), js, img, copyData, copyIcons);
+const gulpBuild = gulp.parallel(gulp.series(css), html, js, img, copyJson, copyIcons);
 
 exports.default = function () {
     gulpBuild();
 
-    gulp.watch(['src/*.json', 'src/*.html'], copyData());
-
-    gulp.watch('image/*.css', img);
-
-    gulp.watch('src/*.css', gulp.series(css));
-
+    gulp.watch('src/*.json', copyJson());
+    gulp.watch('images/*', img);
+    gulp.watch('src/*.css', css);
     gulp.watch('src/*.js', js);
+    gulp.watch('src/*.html', html);
 }
